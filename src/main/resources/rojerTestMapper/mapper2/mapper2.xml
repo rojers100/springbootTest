@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--<mapper> 标签用于定义 Mapper XML 文件。-->
+<!--namespace 属性指定了该 Mapper XML 文件对应的 Mapper 接口的类路径。-->
+<mapper namespace="com.luojie.dao.mapper2.Mapper2">
+
+    <update id="addUserBalance" parameterType="com.luojie.moudle.UserModel">
+        update users set money = money + #{money} where userid = #{userid}
+    </update>
+
+    <update id="addLibrary" parameterType="com.luojie.moudle.LibraryModel">
+        update library set amount = amount + #{amount} where id = #{id}
+    </update>
+
+    <select id="getBookPrice" resultType="java.lang.Integer">
+        SELECT price FROM library WHERE name = #{name}
+    </select>
+
+    <update id="buyBook">
+        UPDATE library SET amount = amount - #{amount} WHERE name = #{name}
+    </update>
+
+    <update id="userDeductMoney">
+        UPDATE users SET money = money - #{money} WHERE userid = #{userid}
+    </update>
+
+</mapper>

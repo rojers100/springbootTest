@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 定义输出到控制台的日志记录器 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- 设置日志输出格式 -->
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+<!--            <pattern>${ACCESS_LOG_PATTERN}</pattern>-->
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>logs/mylog.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <!-- 日志文件名称格式，按日期滚动 -->
+            <fileNamePattern>logs/mylog.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
+            <!-- 最多保留的日志文件数量 -->
+            <maxIndex>30</maxIndex>
+            <minIndex>1</minIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <!-- 单个日志文件大小，例如: 千字节:10KB 或 10kb;
+             兆字节:10MB 或 10mb;  以及10GB 或 10gb：-->
+            <maxFileSize>10MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder>
+            <pattern>%date [%thread] %-5level %logger{35} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!--打印数据库连接池日志信息-->
+    <logger name="com.zaxxer.hikari" level="DEBUG"/>
+    <!--打印sql信息-->
+    <logger name="com.luojie.dao" level="DEBUG"/>
+    <!--additivity="false" 确保特定类的日志不会传递给跟logger，避免重复输出-->
+    <logger name="com.luojie.config.logconfig" level="INFO" additivity="false">
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <!-- 设置根日志级别为 INFO -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/> <!-- 将日志输出到控制台 -->
+    </root>
+
+</configuration>

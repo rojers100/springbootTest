@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ResourceBundleManager">
+    <file url="file://$PROJECT_DIR$/src/main/resources/mess_ja_JP.properties" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/mess_zh_CN.properties" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/messageage_en.properties" />
+    <file url="file://$PROJECT_DIR$/src/main/resources/messageage_zh_CN.properties" />
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/src/main/resources/messageage_en.properties" />
+      <file value="file://$PROJECT_DIR$/src/main/resources/messageage_zh_CN.properties" />
+      <base-name>messageage</base-name>
+    </custom-resource-bundle>
+    <custom-resource-bundle>
+      <file value="file://$PROJECT_DIR$/src/main/resources/message_en.properties" />
+      <file value="file://$PROJECT_DIR$/src/main/resources/message_ja_JP.properties" />
+      <file value="file://$PROJECT_DIR$/src/main/resources/message_zh_CN.properties" />
+      <base-name>mess</base-name>
+    </custom-resource-bundle>
+  </component>
+</project>
