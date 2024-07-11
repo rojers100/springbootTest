@@ -24,4 +24,12 @@
         UPDATE users SET money = money - #{money} WHERE userid = #{userid}
     </update>
 
+    <select id="getuuid" resultType="java.lang.String">
+        SELECT uuid FROM uq WHERE uuid = #{uuid} LIMIT 1;
+    </select>
+
+    <insert id="insertUq" parameterType="com.luojie.moudle.IdempotenceTestModule">
+        INSERT INTO uq (`key`, `value`, `uuid`) VALUES (#{key}, #{value}, #{uuid})
+    </insert>
+
 </mapper>

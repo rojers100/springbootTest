@@ -1,5 +1,6 @@
 package com.luojie.dao.mapper2;
 
+import com.luojie.moudle.IdempotenceTestModule;
 import com.luojie.moudle.LibraryModel;
 import com.luojie.moudle.UserModel;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,4 +20,8 @@ public interface Mapper2 {
     void userDeductMoney(@Param("userid")String userid, @Param("money") BigDecimal money);
 
     Integer getBookPrice(String name);
+
+    String getuuid(String uuid);
+
+    void insertUq(IdempotenceTestModule module);
 }
