@@ -1,4 +1,4 @@
-package com.luojie.config;
+package com.luojie.config.eventListener;
 
 import com.luojie.event.RojerEvent;
 import lombok.extern.slf4j.Slf4j;

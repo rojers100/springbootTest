@@ -60,7 +60,7 @@ public class DecryptEnvironmentPostProcessor implements EnvironmentPostProcessor
 
 //    public static void main(String[] args) {
 //        DecryptEnvironmentPostProcessor processor = new DecryptEnvironmentPostProcessor();
-//        String s = processor.encrypt("lj1004018277");
+//        String s = processor.encrypt("rojer1234");
 //        System.out.println(s);
 //    }
 }
