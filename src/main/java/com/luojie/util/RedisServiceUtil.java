@@ -32,6 +32,36 @@ public class RedisServiceUtil {
     }
 
     /**
+     * 普通string类型，设置没有就设置
+     *
+     * @param key
+     * @param value
+     */
+    public boolean setIfAbsent(String key, String value) {
+        try {
+            return redisTemplate.opsForValue().setIfAbsent(key, value);
+        } catch (Exception e) {
+            log.error("fail set redis key:{},value:{}, errorMsg:{}", key, value, e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * 普通string类型，没有就设置包括过期时间
+     *
+     * @param key
+     * @param value
+     */
+    public boolean setIfAbsentWithExpire(String key, String value, int time, TimeUnit timeUnit) {
+        try {
+            return redisTemplate.opsForValue().setIfAbsent(key, value, time, timeUnit);
+        } catch (Exception e) {
+            log.error("fail set redis key:{},value:{}, errorMsg:{}", key, value, e.getMessage());
+            return false;
+        }
+    }
+
+    /**
      * 普通string类型，设置值并设置超时时间
      *
      * @param key
