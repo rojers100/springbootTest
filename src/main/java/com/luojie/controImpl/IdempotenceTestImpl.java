@@ -14,7 +14,8 @@ public class IdempotenceTestImpl {
 
     public void setup(String uuid, IdempotenceTestModule module) {
         // 检查是否已经存在
-        String getuuid = mapper2.getuuid(uuid);
+//        String getuuid = mapper2.getuuid(uuid);
+        String getuuid = mapper2.getOne(uuid, module.getKey(), module.getValue());
         if (StringUtils.isNotBlank(getuuid)) {
             throw new IllegalArgumentException("已经处理过了");
         }

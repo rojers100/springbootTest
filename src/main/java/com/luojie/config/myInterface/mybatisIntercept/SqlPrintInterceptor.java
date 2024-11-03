@@ -43,9 +43,15 @@ public class SqlPrintInterceptor implements Interceptor {
     public Object intercept(Invocation invocation) throws Throwable {
         // 记录开始时间
         long startTime = System.currentTimeMillis();
+        Object proceed = null;
 
         // 执行原始方法
-        Object proceed = invocation.proceed();
+        try {
+            proceed = invocation.proceed();
+        } catch (Throwable t) {
+            log.error("Error during SQL execution", t);
+            throw t; // 重新抛出异常
+        }
 
         // 记录结束时间
         long endTime = System.currentTimeMillis();
@@ -113,6 +119,10 @@ public class SqlPrintInterceptor implements Interceptor {
 
         // 如果参数对象和参数映射不为空
         if (!ObjectUtils.isEmpty(parameterObject) && !ObjectUtils.isEmpty(parameterMappings)) {
+            // 如果只有一个参数，直接替换
+            if (parameterObject instanceof String && parameterMappings.size() == 1) {
+                return sql.replaceFirst("\\?", String.valueOf(parameterObject)); // 处理缺少值的情况
+            }
             // 遍历每个参数映射
             for (ParameterMapping parameterMapping : parameterMappings) {
                 String propertyName = parameterMapping.getProperty(); // 获取属性名

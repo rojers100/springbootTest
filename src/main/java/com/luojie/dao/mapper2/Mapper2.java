@@ -23,5 +23,7 @@ public interface Mapper2 {
 
     String getuuid(String uuid);
 
+    String getOne(@Param("uuid")String uuid, @Param("key") String key, @Param("value") String value);
+
     void insertUq(IdempotenceTestModule module);
 }
