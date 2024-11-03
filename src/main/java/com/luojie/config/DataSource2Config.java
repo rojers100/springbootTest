@@ -1,6 +1,8 @@
 package com.luojie.config;
 
+import com.luojie.config.myInterface.mybatisIntercept.SqlPrintInterceptor;
 import com.zaxxer.hikari.HikariDataSource;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -40,6 +42,9 @@ public class DataSource2Config {
         SqlSessionFactoryBean sessionFactoryBean = new SqlSessionFactoryBean();
         sessionFactoryBean.setDataSource(dataSource);
         sessionFactoryBean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath:rojerTestMapper/mapper2/*.xml"));
+        // 增加自定义的sql日志打印器
+        // 用new Interceptor[]{new SqlPrintInterceptor()}而不是直接new SqlPrintInterceptor()是为了后续方便扩展
+        sessionFactoryBean.setPlugins(new Interceptor[]{new SqlPrintInterceptor()});
         return sessionFactoryBean.getObject();
     }
 
