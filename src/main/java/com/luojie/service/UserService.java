@@ -12,6 +12,13 @@ public class UserService {
     @Autowired
     private Mapper1 mapper1;
 
+    /**
+     * value - 缓存名称
+     * key - 自定义缓存键
+     *
+     * @param token
+     * @return
+     */
     @Cacheable(value = "userCache", key = "#token")
     public UserModel getUserByToken(String token) {
         // 这里假设token就是userId，实际项目中应该根据token查询用户信息
