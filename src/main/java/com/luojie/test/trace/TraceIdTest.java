@@ -4,7 +4,6 @@ import com.luojie.config.trace.TraceIdContext;
 import com.luojie.config.trace.TraceIdInterceptor;
 import com.luojie.config.trace.TraceIdThreadPoolTaskExecutor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 import org.slf4j.MDC;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

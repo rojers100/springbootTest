@@ -1,16 +1,11 @@
 package com.luojie.test.trace;
 
-import com.luojie.config.trace.TraceIdCallable;
 import com.luojie.config.trace.TraceIdCompletableFuture;
 import com.luojie.config.trace.TraceIdContext;
-import com.luojie.config.trace.TraceIdInterceptor;
 import com.luojie.config.trace.TraceIdRunnable;
 import com.luojie.config.trace.TraceIdThreadPoolExecutor;
-import com.luojie.config.trace.TraceIdThreadPoolTaskExecutor;
 import com.luojie.util.RedisServiceUtil;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,14 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 /**
  * TraceId Redis测试类

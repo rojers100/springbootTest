@@ -1,19 +1,16 @@
 package com.luojie.common;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 
-
-//@ControllerAdvice
-//@ResponseBody
+@ControllerAdvice
+@ResponseBody
 public class CommonExceptionHandle {
 
-    @Autowired
     private HttpServletResponse response;
 
     @ExceptionHandler(NoPermissionException.class)

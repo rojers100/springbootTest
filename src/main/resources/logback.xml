@@ -6,7 +6,7 @@
         <encoder>
             <!-- 设置日志输出格式 -->
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-<!--            <pattern>${ACCESS_LOG_PATTERN}</pattern>-->
+            <!--            <pattern>${ACCESS_LOG_PATTERN}</pattern>-->
         </encoder>
     </appender>
 
@@ -15,8 +15,8 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
             <!-- 日志文件名称格式，按日期滚动 -->
             <fileNamePattern>logs/mylog.%d{yyyy-MM-dd}.%i.log.zip</fileNamePattern>
-            <!-- 最多保留的日志文件数量 -->
-            <maxIndex>30</maxIndex>
+            <!-- 最多保留的日志文件数量，最大值为21 -->
+            <maxIndex>21</maxIndex>
             <minIndex>1</minIndex>
         </rollingPolicy>
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
@@ -41,6 +41,7 @@
     <!-- 设置根日志级别为 INFO -->
     <root level="INFO">
         <appender-ref ref="CONSOLE"/> <!-- 将日志输出到控制台 -->
+        <appender-ref ref="FILE"/>
     </root>
 
 </configuration>

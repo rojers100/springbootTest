@@ -1,21 +1,24 @@
 package com.luojie.config.filter;
 
+import com.luojie.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.core.Ordered;
 
 @Configuration
 public class FilterConfig {
 
-    // 禁用自动注册
+    @Autowired
+    private UserService userService;
+
     @Bean
-    public FilterRegistrationBean<UserAuthFilter> userAuthFilter(UserAuthFilter filter) {
+    public FilterRegistrationBean<UserAuthFilter> userAuthFilterRegistration() {
         FilterRegistrationBean<UserAuthFilter> registration = new FilterRegistrationBean<>();
-        registration.setFilter(filter);
-        registration.setOrder(Ordered.HIGHEST_PRECEDENCE); // 明确指定顺序
-        registration.addUrlPatterns("/*"); // 指定过滤路径
-        registration.setEnabled(true);
+        registration.setFilter(new UserAuthFilter(userService));
+        registration.addUrlPatterns("/*"); // 根据需要调整URL模式
+        registration.setName("userAuthFilter");
+        registration.setOrder(1); // 设置过滤器顺序
         return registration;
     }
 }

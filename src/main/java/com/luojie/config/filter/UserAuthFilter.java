@@ -6,9 +6,9 @@ import com.luojie.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Slf4j
@@ -33,6 +33,7 @@ public class UserAuthFilter implements Filter {
             String token = httpRequest.getHeader("token");
             if (!StringUtils.hasText(token)) {
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                httpResponse.setContentType("text/plain;charset=UTF-8");
                 httpResponse.getWriter().write("Missing token");
                 return;
             }
@@ -43,6 +44,7 @@ public class UserAuthFilter implements Filter {
             log.info("------请求结束----");
             if (user == null) {
                 httpResponse.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                httpResponse.setContentType("text/plain;charset=UTF-8");
                 httpResponse.getWriter().write("Invalid token");
                 return;
             }
@@ -58,4 +60,4 @@ public class UserAuthFilter implements Filter {
             log.info("------filter清理用户上下文----");
         }
     }
-} 
+}
