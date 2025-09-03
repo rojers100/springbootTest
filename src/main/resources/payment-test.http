@@ -1,0 +1,152 @@
+### HTTP测试文件 - 策略模式 + 工厂模式实现
+### 文件名: payment-test.http
+### 适用环境: IntelliJ IDEA
+### 使用方法: 运行Spring Boot应用后，点击每个请求左侧的绿色箭头执行测试
+
+### 配置说明
+# 此文件用于测试工厂模式+策略模式的支付系统实现
+# 测试覆盖了策略选择、执行、异常处理和边界情况
+# 所有请求都添加了token认证头，以通过UserAuthFilter的拦截
+
+### 基础环境测试
+# 测试服务是否正常启动
+GET http://localhost:8080/api/payment
+Accept: application/json
+token: 007
+
+
+### 一、通用支付接口测试 (直接策略选择模式)
+# 测试场景：通过参数动态选择不同的支付策略
+# 设计意图：验证PaymentContext和PaymentStrategyFactory能否正确选择和执行对应策略
+
+### 测试1: 通用接口 - 支付宝支付
+# 预期结果: 返回"使用支付宝支付了100.50元"
+GET http://localhost:8080/api/payment/pay?paymentMethod=alipay&amount=100.50
+Accept: text/plain
+token: 007
+
+### 测试2: 通用接口 - 微信支付
+# 预期结果: 返回"使用微信支付了200.75元"
+GET http://localhost:8080/api/payment/pay?paymentMethod=wechatPay&amount=200.75
+Accept: text/plain
+token: 007
+
+### 测试3: 通用接口 - 银联支付
+# 预期结果: 返回"使用银联支付了300.99元"
+GET http://localhost:8080/api/payment/pay?paymentMethod=unionPay&amount=300.99
+Accept: text/plain
+token: 007
+
+
+### 二、专用支付接口测试 (预定义策略选择模式)
+# 测试场景：使用预定义的专用接口进行支付
+# 设计意图：验证不同的控制器方法能否正确调用对应的策略
+
+### 测试4: 支付宝专用接口
+# 预期结果: 返回"使用支付宝支付了150.25元"
+GET http://localhost:8080/api/payment/alipay?amount=150.25
+Accept: text/plain
+token: 007
+
+### 测试5: 微信支付专用接口
+# 预期结果: 返回"使用微信支付了250.50元"
+GET http://localhost:8080/api/payment/wechat?amount=250.50
+Accept: text/plain
+token: 007
+
+### 测试6: 银联支付专用接口
+# 预期结果: 返回"使用银联支付了350.75元"
+GET http://localhost:8080/api/payment/unionpay?amount=350.75
+Accept: text/plain
+token: 007
+
+
+### 三、异常处理测试
+# 测试场景：各种异常情况下的系统行为
+# 设计意图：验证系统的健壮性和错误处理能力
+
+### 测试7: 不支持的支付方式
+# 预期结果: 返回错误信息"支付失败：不支持的支付方式：invalidPay"
+GET http://localhost:8080/api/payment/pay?paymentMethod=invalidPay&amount=100.00
+Accept: text/plain
+token: 007
+
+### 测试8: 缺少支付方式参数
+# 预期结果: 400 Bad Request (Spring MVC自动处理)
+GET http://localhost:8080/api/payment/pay?amount=100.00
+Accept: text/plain
+token: 007
+
+### 测试9: 缺少金额参数
+# 预期结果: 400 Bad Request (Spring MVC自动处理)
+GET http://localhost:8080/api/payment/pay?paymentMethod=alipay
+Accept: text/plain
+token: 007
+
+
+### 四、边界值与特殊情况测试
+# 测试场景：各种边界情况和特殊输入
+# 设计意图：验证系统在极端情况下的稳定性
+
+### 测试10: 金额为0
+# 预期结果: 返回相应支付方式的支付信息
+GET http://localhost:8080/api/payment/alipay?amount=0
+Accept: text/plain
+token: 007
+
+### 测试11: 负数金额
+# 预期结果: 正常处理（取决于实际业务逻辑，当前实现会接受负数）
+GET http://localhost:8080/api/payment/wechat?amount=-50.50
+Accept: text/plain
+token: 007
+
+### 测试12: 大数金额
+# 预期结果: 正常处理大数金额
+GET http://localhost:8080/api/payment/unionpay?amount=999999.99
+Accept: text/plain
+token: 007
+
+### 测试13: 多位小数金额
+# 预期结果: 正常处理多位小数
+GET http://localhost:8080/api/payment/alipay?amount=99.9999
+Accept: text/plain
+token: 007
+
+
+### 五、性能与并发相关测试
+# 测试场景：连续快速请求不同支付方式
+# 设计意图：测试系统在高频请求下的稳定性和并发处理能力
+
+### 测试14: 连续请求 - 支付宝 -> 微信 -> 银联
+# 预期结果: 所有请求都能正确响应
+GET http://localhost:8080/api/payment/alipay?amount=10.00
+Accept: text/plain
+token: Rojer
+
+### 连续测试 - 无需单独运行
+GET http://localhost:8080/api/payment/wechat?amount=20.00
+Accept: text/plain
+token: Rojer
+
+### 连续测试 - 无需单独运行
+GET http://localhost:8080/api/payment/unionpay?amount=30.00
+Accept: text/plain
+token: Rojer
+
+
+### 测试原理说明
+# 1. **策略模式**：通过PaymentStrategy接口定义统一行为，各种支付方式作为具体策略实现
+# 2. **工厂模式**：PaymentStrategyFactory负责创建和管理策略实例，实现策略的封装和隐藏
+# 3. **上下文类**：PaymentContext作为策略的使用者，提供统一的调用入口
+# 4. **依赖注入**：Spring框架自动注入所有策略实现到工厂，实现松耦合
+
+### 执行测试前准备
+# 1. 确保Spring Boot应用已经启动（默认端口8080）
+# 2. 在IntelliJ IDEA中打开此文件
+# 3. 点击每个请求左侧的绿色箭头执行测试
+# 4. 观察响应结果是否符合预期
+
+### 测试结果验证
+# - 成功情况：返回"使用XXX支付了XX.XX元"格式的字符串
+# - 失败情况：返回错误信息或HTTP错误状态码
+# - 可以通过查看应用日志进一步了解策略选择和执行的详细过程
